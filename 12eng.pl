@@ -1,0 +1,9 @@
+like('Ellen',reading).
+like('Marc',computers).
+like('John',batminton).
+like('Eric',reading).
+sport(batminton).
+sport(tennis).
+sport(football).
+sport(baseball).
+sportsman(X):-like(X,Y),sport(Y).
