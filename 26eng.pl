@@ -20,3 +20,7 @@ price('video',12000).
 price('radio',1300).
 price('clock',500).
 buy(X,Y,Z):-price(X,Y),not(have(Z,Y)),have(Z,rub(W)),W>=Y.
+exp(Y,X):-price(Y,X),not((price(_,U),X<U)).
+cntbuy(X,Y,Z) :- price(X,Y),not(have(Z,Y)),have(Z,rub(W)),W<Y.
+cantbuyexp(X):-exp(Y,Z),cntbuy(Y,Z,X).
+donthave(X,Y) :- have(X,_),price(Y,_),not((have(X,Y))).
