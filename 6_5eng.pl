@@ -18,8 +18,7 @@ print_lessons(_).
 print_students(student(Name,lesson(Less),ExMark,ExMark2)):-student(Name,lesson(Less),ExMark,ExMark2),write(student(Name,lesson(Less),ExMark,ExMark2)),nl,fail.
 print_students(_).
 
-rl:-repeat,read(X),(add_lesson(X);not(add_lesson(X))), X=stop.
-
+del_lesson(Less):-retractall(Less).
 
 menu:-repeat,nl,nl,write('MENU'),nl,
     write('1. Add lessons'),nl,
@@ -35,14 +34,19 @@ menu:-repeat,nl,nl,write('MENU'),nl,
     write('11. Number of students'), nl,
     write('12. Change student mark for exam'), nl,
     write('13. Change student mark for exam second try'), nl,
+    write('14. Delete lesson'), nl,
     write('0. EXIT'),nl,nl,
     write('Input number'),
     read(X),
     getmenu(X).
 getmenu(0):-!.
 getmenu(X):-menunum(X),fail.
-menunum(1):-nl,write('Adding lessons until stop input'),repeat,read(X),add_lesson(X), X='Stop',!.
+menunum(1):-nl,write('Adding lessons until stop input'),repeat,read(X),add_lesson(lesson(X)), retract(lesson(stop)), X=stop,!.
+menunum(2):-nl,write('Adding students until stop input'),write('Name'),read(Name),repeat,write('Lesson'),read(Less),write('Mark exam'),read(ExMark),write('Retake mark'),read(Remark),add_student(Name, lesson(Less), ExMark, Remark),write('Add more lessons? y/n'), read(X), X = n,!.
+menunum(3):-nl,write('Number of existing lessons = '),count_lessons(lesson(_),Num),write(Num),!.
 menunum(4):-nl, print_lessons(_),!.
+menunum(5):-nl,print_students(student(_,_,_,_)),!.
+menunum(14):-nl,write('Name of lesson you want to delete?'),read(X),del_lesson(lesson(X)),!.
 /*
 menunum(2):-nl,count_members(member(_,_,_),Num),write('Number of members = '),write(Num),nl,!.
 menunum(3):-nl,write('Input new member info'),nl,write('Name'),read(Name),write('Age'),read(Age),write('Paid'),read(Payinfo),add_member(member(Name,Age,Payinfo)),!.
